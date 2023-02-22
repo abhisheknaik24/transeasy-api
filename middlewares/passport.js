@@ -11,10 +11,7 @@ passport.use(
       scope: ['profile', 'email'],
     },
     async (accessToken, refreshToken, profile, callback) => {
-      let user = await User.exists({
-        email: profile._json.email,
-        isActive: true,
-      });
+      let user = await User.exists({ email: profile._json.email });
 
       if (user) {
         let u = await User.findOne({

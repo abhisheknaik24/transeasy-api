@@ -7,6 +7,10 @@ import morgan from 'morgan';
 import './middlewares/passport.js';
 import passport from 'passport';
 import authRoutes from './routes/authRoutes.js';
+import statesRoutes from './routes/statesRoutes.js';
+import vehiclesRoutes from './routes/vehiclesRoutes.js';
+import deliveryPartnersRoutes from './routes/deliveryPartnersRoutes.js';
+import bookingsRoutes from './routes/bookingsRoutes.js';
 
 const app = express();
 
@@ -45,6 +49,14 @@ app.use(passport.session());
 app.use(passport.authenticate('session'));
 
 app.use('/auth/google', authRoutes);
+
+app.use('/api/states', statesRoutes);
+
+app.use('/api/vehicles', vehiclesRoutes);
+
+app.use('/api/deliveryPartners', deliveryPartnersRoutes);
+
+app.use('/api/bookings', bookingsRoutes);
 
 (async () => {
   try {
