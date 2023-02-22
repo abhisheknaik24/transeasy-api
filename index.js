@@ -4,8 +4,8 @@ import cors from 'cors';
 import session from 'express-session';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
-import passport from 'passport';
 import './middlewares/passport.js';
+import passport from 'passport';
 import authRoutes from './routes/authRoutes.js';
 
 const app = express();
@@ -34,7 +34,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: process.env.COOKIE_SECURE },
+    // cookie: { secure: process.env.COOKIE_SECURE },
   })
 );
 

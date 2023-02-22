@@ -1,5 +1,6 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import User from '../models/users.js';
 
 passport.use(
   new GoogleStrategy(
@@ -9,8 +10,31 @@ passport.use(
       callbackURL: `${process.env.SERVER_URL}/auth/google/callback`,
       scope: ['profile', 'email'],
     },
-    function (accessToken, refreshToken, profile, callback) {
-      callback(null, profile);
+    async (accessToken, refreshToken, profile, callback) => {
+      let user = await User.exists({
+        email: profile._json.email,
+        isActive: true,
+      });
+
+      if (user) {
+        let u = await User.findOne({
+          email: profile._json.email,
+          isActive: true,
+        });
+
+        callback(null, u);
+      } else {
+        let u = new User({
+          firstName: profile._json.given_name,
+          lastName: profile._json.family_name,
+          email: profile._json.email,
+          picture: profile._json.picture,
+        });
+
+        await u.save();
+
+        callback(null, u);
+      }
     }
   )
 );
